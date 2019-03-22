@@ -12,8 +12,6 @@
         android:layout_centerVertical="true"
         android:layout_margin="50dp"
         android:background="@android:color/white"
-        android:rotation="0"
-        android:scaleType="centerInside"
-        android:src="@mipmap/tiny_logo" />
+                    android:src="@mipmap/logo" />
 
 </RelativeLayout>

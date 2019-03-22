@@ -1,19 +1,30 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 'android-Q'
+    signingConfigs {
+        config {
+            keyAlias 'DfortLite'
+            keyPassword 'android'
+            storeFile file('G:/DisplayFort/androidCode/DisplayFortLiteAPP/DisplayFortLite/keystore.jks')
+            storePassword 'android'
+        }
+    }
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.displayfort.displayfortlite"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
+            debuggable = false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+
         }
     }
 }

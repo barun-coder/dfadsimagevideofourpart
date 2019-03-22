@@ -71,14 +71,20 @@ public class PotraitPlayAdsFromUsbUniversalActivity extends BaseSupportActivity 
         int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
-
         setContentView(R.layout.activity_universal_offline_main);
+        RegisterUpdateReceiver();
+        PermisionRequest();
         this.sharedPreferences = getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
         Orientation = ExifInterface.ORIENTATION_UNDEFINED;
-        RegisterUpdateReceiver();
 //        check();
         init();
         SHowMNT();
+
+//        DisplayMetrics displayMetrics = new DisplayMetrics();
+//        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+//        int height = displayMetrics.heightPixels;
+//        int width = displayMetrics.widthPixels;
+//        Log.d("SIZE", width + ":" + height);
 
     }
 
@@ -441,13 +447,12 @@ public class PotraitPlayAdsFromUsbUniversalActivity extends BaseSupportActivity 
 //        }
     }
 
-    @Override
-    public void onPause() {
-        onFinishAPP();
-        super.onPause();
-
-
-    }
+//    @Override
+//    public void onPause() {
+//        showLog("onPause","onFinishAPP");
+//        onFinishAPP();
+//        super.onPause();
+//    }
 
     @Override
     protected void onStart() {
@@ -456,7 +461,9 @@ public class PotraitPlayAdsFromUsbUniversalActivity extends BaseSupportActivity 
 
     private void onFinishAPP() {
         try {
+            showLog("MediaMount onFinishAPP","Registerd");
             unregisterReceiver(myReceiver);
+            showLog("MediaMount","UNRegisterd");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -472,6 +479,7 @@ public class PotraitPlayAdsFromUsbUniversalActivity extends BaseSupportActivity 
 
     @Override
     public void onStop() {
+        showLog("onStop","onFinishAPP");
         onFinishAPP();
         super.onStop();
 
@@ -479,6 +487,7 @@ public class PotraitPlayAdsFromUsbUniversalActivity extends BaseSupportActivity 
 
     @Override
     public void onDestroy() {
+        showLog("onDestroy","onFinishAPP");
         onFinishAPP();
         super.onDestroy();
 
@@ -522,7 +531,9 @@ public class PotraitPlayAdsFromUsbUniversalActivity extends BaseSupportActivity 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("android.intent.action.MEDIA_MOUNTED");
         intentFilter.addDataScheme("file");
+        intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
         myReceiver = new MyReceiver();
         this.registerReceiver(myReceiver, intentFilter);
+        showLog("MediaMount","Registerd");
     }
 }

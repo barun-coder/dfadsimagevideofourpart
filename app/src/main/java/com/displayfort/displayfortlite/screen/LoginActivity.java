@@ -7,7 +7,9 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,7 +32,7 @@ import androidx.appcompat.app.AppCompatActivity;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseSupportActivity {
 
     private Context context;
     public EditText securityPinEt;
@@ -41,6 +43,10 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_login);
         context = this;
         init();
@@ -53,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void init() {
-                securityPinEt = (EditText) findViewById(R.id.security_pin_et);
+        securityPinEt = (EditText) findViewById(R.id.security_pin_et);
         mLoginBtn = (Button) findViewById(R.id.email_sign_in_button);
         mUniqueIdTv = (TextView) findViewById(R.id.uniquid_tv);
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +68,17 @@ public class LoginActivity extends AppCompatActivity {
                 if (isValid()) {
                     loginRequest();
                 }
+            }
+        });
+
+        securityPinEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE) || (actionId == R.id.email_sign_in_button)) {
+                    if (isValid()) {
+                        loginRequest();
+                    }
+                }
+                return false;
             }
         });
 
@@ -76,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (!ValidationUtils.isValidString(securityPin, 8)) {
-            ShowToast("Not a valid Password.", "Please enter valid password");
+            ShowToast("Not a valid Pin.", "Please enter valid 8 Digit Pin");
             return false;
         }
 

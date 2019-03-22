@@ -16,11 +16,12 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
+import com.displayfort.displayfortlite.DFPrefrence;
 import com.displayfort.displayfortlite.R;
 
 import java.util.ArrayList;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseSupportActivity {
 
     private Context context;
 
@@ -38,91 +39,17 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent;
-//                intent = new Intent(context, PotraitPlayAdsFromUsbUniversalActivity.class);
-//                intent = new Intent(context, PlayAdsFromUsbUniversalActivity.class);
-                intent = new Intent(context, LoginActivity.class);
+                if (new DFPrefrence(context).IsLogin()) {
+                    intent = new Intent(context, PotraitPlayAdsFromUsbUniversalActivity.class);
+                } else {
+                    intent = new Intent(context, LoginActivity.class);
+                }
                 startActivity(intent);
                 finish();
 
             }
-        }, 500);
+        }, 2500);
     }
 
-    private ArrayList<String> permissionsToRequest;
-    private ArrayList<String> permissions = new ArrayList<>();
-    private static final int ALL_PERMISSIONS_RESULT = 1011;
-    private ArrayList<String> permissionsRejected = new ArrayList<>();
-
-    private void PermisionRequest() {
-        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-        permissions.add(Manifest.permission.READ_PHONE_STATE);
-        permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-
-        permissionsToRequest = permissionsToRequest(permissions);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (permissionsToRequest.size() > 0) {
-                requestPermissions(permissionsToRequest.toArray(
-                        new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
-            }
-        }
-    }
-
-    private ArrayList<String> permissionsToRequest(ArrayList<String> wantedPermissions) {
-        ArrayList<String> result = new ArrayList<>();
-
-        for (String perm : wantedPermissions) {
-            if (!hasPermission(perm)) {
-                result.add(perm);
-            }
-        }
-
-        return result;
-    }
-
-    private boolean hasPermission(String permission) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED;
-        }
-
-        return true;
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case ALL_PERMISSIONS_RESULT:
-                for (String perm : permissionsToRequest) {
-                    if (!hasPermission(perm)) {
-                        permissionsRejected.add(perm);
-                    }
-                }
-
-                if (permissionsRejected.size() > 0) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
-                            new AlertDialog.Builder(SplashActivity.this).
-                                    setMessage("These permissions are mandatory to get your location. You need to allow them.").
-                                    setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                requestPermissions(permissionsRejected.
-                                                        toArray(new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);
-                                            }
-                                        }
-                                    }).setNegativeButton("Cancel", null).create().show();
-
-                            return;
-                        }
-                    }
-                }
-
-                break;
-        }
-    }
 
 }

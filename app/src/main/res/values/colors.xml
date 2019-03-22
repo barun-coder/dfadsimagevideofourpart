@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#EF3B3B</color>
+    <color name="colorPrimary">#E01E26</color>
     <color name="colorPrimaryDark">#EF3B3B</color>
     <color name="DarkcolorPrimary">#221E25</color>
     <color name="DarkcolorPrimaryDark">#221E25</color>
@@ -8,4 +8,7 @@
 
     <color name="selection">#EE2F37</color>
     <color name="normal">#E01E26</color>
+
+    <color name="darkgray">#3D3B3B</color>
+    <color name="lightgray">#585858</color>
 </resources>
