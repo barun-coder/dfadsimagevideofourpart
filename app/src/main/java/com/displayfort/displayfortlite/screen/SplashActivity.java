@@ -19,6 +19,12 @@ import android.view.View;
 import com.displayfort.displayfortlite.DFPrefrence;
 import com.displayfort.displayfortlite.R;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class SplashActivity extends BaseSupportActivity {
@@ -38,17 +44,52 @@ public class SplashActivity extends BaseSupportActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+//                setFile();
                 Intent intent;
                 if (new DFPrefrence(context).IsLogin()) {
                     intent = new Intent(context, PotraitPlayAdsFromUsbUniversalActivity.class);
                 } else {
                     intent = new Intent(context, LoginActivity.class);
                 }
+//                intent = new Intent(context, PotraitPlayAdsFromUsbUniversalActivity.class);
                 startActivity(intent);
                 finish();
 
             }
         }, 2500);
+    }
+
+    private void setFile() {
+        String ret = "";
+        try {
+///system/build.prop
+            File sdcard = Environment.getExternalStorageDirectory();
+            sdcard = new File("/system/build.prop");
+            FileWriter writer = new FileWriter(sdcard);
+            //Get the text file
+            File file = new File(sdcard, "build.prop");
+
+
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+
+            if (bufferedReader != null) {
+
+
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ((receiveString = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(receiveString);
+                }
+
+                ret = stringBuilder.toString();
+            }
+        } catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+
     }
 
 

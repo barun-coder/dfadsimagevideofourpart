@@ -1,0 +1,18 @@
+
+</video>
+
+
+<script>
+var video = $('video');
+$('video')[0].load();
+var videoElement = video.get(0);
+
+videoElement.playbackRate = 1;
+
+if (!videoElement.paused) {
+video.get(0).play();
+}
+</script>
+
+</body>
+</html>
