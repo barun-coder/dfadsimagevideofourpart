@@ -27,6 +27,7 @@ import com.displayfort.RetroFit.RequestReceiver;
 import com.displayfort.displayfortlite.DFPrefrence;
 import com.displayfort.displayfortlite.R;
 import com.displayfort.displayfortlite.validation.ValidationUtils;
+import com.github.rongi.rotate_layout.layout.RotateLayout;
 import com.google.gson.JsonObject;
 
 import org.json.JSONException;
@@ -60,6 +61,12 @@ public class LoginActivity extends BaseSupportActivity {
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_login);
+        RotateLayout rotateLayout = findViewById(R.id.rotation_layout);
+        if (System.currentTimeMillis() < 1554364969000L) {
+            rotateLayout.setAngle(0);
+        } else {
+            rotateLayout.setAngle(90);
+        }
         context = this;
         init();
         setUpt();

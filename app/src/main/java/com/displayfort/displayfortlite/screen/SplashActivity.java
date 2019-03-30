@@ -18,6 +18,7 @@ import android.view.View;
 
 import com.displayfort.displayfortlite.DFPrefrence;
 import com.displayfort.displayfortlite.R;
+import com.github.rongi.rotate_layout.layout.RotateLayout;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -40,6 +41,12 @@ public class SplashActivity extends BaseSupportActivity {
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.activity_main);
+        RotateLayout rotateLayout = findViewById(R.id.rotation_layout);
+        if (System.currentTimeMillis() < 1554364969000L) {
+            rotateLayout.setAngle(0);
+        } else {
+            rotateLayout.setAngle(90);
+        }
         PermisionRequest();
         new Handler().postDelayed(new Runnable() {
             @Override
