@@ -9,8 +9,9 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
-
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -23,11 +24,9 @@ import android.widget.Toast;
 
 import com.displayfort.RetroFit.BaseRequest;
 import com.displayfort.RetroFit.RequestReceiver;
-
 import com.displayfort.displayfortlite.DFPrefrence;
 import com.displayfort.displayfortlite.R;
 import com.displayfort.displayfortlite.validation.ValidationUtils;
-import com.github.rongi.rotate_layout.layout.RotateLayout;
 import com.google.gson.JsonObject;
 
 import org.json.JSONException;
@@ -38,9 +37,6 @@ import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.List;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 /**
  * A login screen that offers login via email/password.
@@ -61,12 +57,6 @@ public class LoginActivity extends BaseSupportActivity {
                 | View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         setContentView(R.layout.activity_login);
-        RotateLayout rotateLayout = findViewById(R.id.rotation_layout);
-        if (System.currentTimeMillis() < 1554364969000L) {
-            rotateLayout.setAngle(0);
-        } else {
-            rotateLayout.setAngle(90);
-        }
         context = this;
         init();
         setUpt();

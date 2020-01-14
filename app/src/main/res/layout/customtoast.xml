@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/custom_toast_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#00000000"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+
+    <TextView
+        android:id="@+id/custom_toast_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="To"
+        android:gravity="bottom"
+        android:text="JavaTpoint custom Toast"
+        android:textSize="16sp" />
+</LinearLayout>  

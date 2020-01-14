@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.github.rongi.rotate_layout.layout.RotateLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rotation_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/uvv_black"
@@ -84,6 +85,17 @@
             android:src="@mipmap/new_revised_dlite"
             android:visibility="gone" />
 
+        <TextView
+            android:id="@+id/sampleTexxt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="bottom"
+            android:rotation="180"
+            android:text="texing"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"
+            android:visibility="gone" />
 
     </RelativeLayout>
 </com.github.rongi.rotate_layout.layout.RotateLayout>

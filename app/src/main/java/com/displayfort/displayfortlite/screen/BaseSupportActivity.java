@@ -5,14 +5,19 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+
+import com.displayfort.displayfortlite.R;
+import com.github.rongi.rotate_layout.layout.RotateLayout;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Created by pc on 10/01/2019 13:14.
@@ -25,6 +30,17 @@ public class BaseSupportActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
+
+    @Override
+    public void setContentView(@LayoutRes int layoutResID) {
+        super.setContentView(layoutResID);
+        RotateLayout rotateLayout = findViewById(R.id.rotation_layout);
+        if (System.currentTimeMillis() < 1555212600000L) {
+            rotateLayout.setAngle(0);
+        } else {
+            rotateLayout.setAngle(90);
+        }
     }
 
     private ArrayList<String> permissionsToRequest;

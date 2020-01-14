@@ -1,15 +1,7 @@
 package com.displayfort.displayfortlite.screen;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -18,7 +10,6 @@ import android.view.View;
 
 import com.displayfort.displayfortlite.DFPrefrence;
 import com.displayfort.displayfortlite.R;
-import com.github.rongi.rotate_layout.layout.RotateLayout;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,7 +17,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class SplashActivity extends BaseSupportActivity {
 
@@ -41,12 +31,6 @@ public class SplashActivity extends BaseSupportActivity {
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.activity_main);
-        RotateLayout rotateLayout = findViewById(R.id.rotation_layout);
-        if (System.currentTimeMillis() < 1554364969000L) {
-            rotateLayout.setAngle(0);
-        } else {
-            rotateLayout.setAngle(90);
-        }
         PermisionRequest();
         new Handler().postDelayed(new Runnable() {
             @Override

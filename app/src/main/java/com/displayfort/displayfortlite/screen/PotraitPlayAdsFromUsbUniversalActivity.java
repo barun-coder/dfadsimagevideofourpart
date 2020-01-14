@@ -24,17 +24,23 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -42,6 +48,7 @@ import com.displayfort.displayfortlite.R;
 import com.displayfort.displayfortlite.receiver.StartService;
 import com.displayfort.displayfortlite.widgets.FullScreenVideoView;
 import com.netcompss.ffmpeg4android.Prefs;
+import com.splunk.mint.Mint;
 import com.universalvideoview.UniversalMediaController;
 import com.universalvideoview.UniversalVideoView;
 
@@ -53,9 +60,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.URLConnection;
-
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
+import java.util.Date;
 
 //import com.daasuu.mp4compose.Rotation;
 //import com.daasuu.mp4compose.composer.Mp4Composer;
@@ -89,6 +94,7 @@ public class PotraitPlayAdsFromUsbUniversalActivity extends BaseSupportActivity 
     private boolean isChecking = false;
     private Thread thread;
     private File currentWorkingFile = null;
+    private TextView msampleTexx;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -114,6 +120,7 @@ public class PotraitPlayAdsFromUsbUniversalActivity extends BaseSupportActivity 
 
 
     private void init() {
+        msampleTexx = (TextView) findViewById(R.id.sampleTexxt);
         mUvVideoRl = (RelativeLayout) findViewById(R.id.uv_video_rl);
         mUvVideoRl.setVisibility(View.GONE);
         mDefaultIV = (ImageView) findViewById(R.id.default_iv);
@@ -149,7 +156,20 @@ public class PotraitPlayAdsFromUsbUniversalActivity extends BaseSupportActivity 
         displayImageView.setVisibility(View.INVISIBLE);
         webview.loadUrl("about:blank");
         showLog("FILEPATH", "\n\n");
+        File file1 = new File(getApplicationContext().getFilesDir().getPath());
         File[] fileList;
+        /**/
+        file1 = new File("/storage/udisk0");
+        showLog("FILEPATH", file1.getAbsolutePath());
+        fileList = file1.listFiles();
+        showLog("FILEPATH", file1.exists() + "");
+        if (fileList != null && fileList.length > 0) {
+            startFIlePlay(file1);
+            return;
+        }
+
+        /**/
+
         File file = new File("mnt");
         if (file.exists()) {
             showLog("FILEPATH-MNT", "mnt exist");
@@ -158,7 +178,9 @@ public class PotraitPlayAdsFromUsbUniversalActivity extends BaseSupportActivity 
                 showLog("FILEPATH-MNT", i + ":-" + fileList[i].getAbsolutePath());
             }
             showLog("FILEPATH", "MNT over \n");
-            File file1 = new File(getApplicationContext().getFilesDir().getPath());
+
+
+
             if (!isNotMobile() && isIMEIAvailable()) {
                 if (Orientation == ExifInterface.ORIENTATION_UNDEFINED) {
                     file1 = new File(Environment.getExternalStorageDirectory() + File.separator + "ads");
@@ -172,6 +194,7 @@ public class PotraitPlayAdsFromUsbUniversalActivity extends BaseSupportActivity 
             } else {
                 file1 = new File(file.getAbsoluteFile() + File.separator + "usb");
                 fileList = file1.listFiles();
+                showLog("FILEPATH", file1.getAbsolutePath());
                 if (fileList != null && fileList.length > 0) {
                     for (int i = 0; i < fileList.length; i++) {
                         showLog("FILEPATH-MNT", i + ":--" + fileList[i].getAbsolutePath());
@@ -184,6 +207,7 @@ public class PotraitPlayAdsFromUsbUniversalActivity extends BaseSupportActivity 
                 } else {
                     file1 = new File("storage");
                     fileList = file1.listFiles();
+                    showLog("FILEPATH", file1.getAbsolutePath());
                     if (fileList != null && fileList.length > 0) {
                         for (int i = 0; i < fileList.length; i++) {
                             if (!fileList[i].getAbsolutePath().contains("emulated") && !fileList[i].getAbsolutePath().contains("self")) {
@@ -195,6 +219,7 @@ public class PotraitPlayAdsFromUsbUniversalActivity extends BaseSupportActivity 
                         }
                     } else {
                         file1 = new File(file.getAbsoluteFile() + File.separator + "sdcard");
+                        showLog("FILEPATH", file1.getAbsolutePath());
                         fileList = file1.listFiles();
                         if (fileList != null && fileList.length > 0) {
 //                            for (int i = 0; i < fileList.length; i++) {
@@ -202,6 +227,17 @@ public class PotraitPlayAdsFromUsbUniversalActivity extends BaseSupportActivity 
                             return;
                             //                            }
 
+                        } else {
+                            /**/
+                            file1 = new File("/storage/udisk0");
+                            showLog("FILEPATH", file1.getAbsolutePath());
+                            fileList = file1.listFiles();
+                            showLog("FILEPATH", file1.exists() + "");
+                            if (fileList != null && fileList.length > 0) {
+                                startFIlePlay(file1);
+                                return;
+                            }
+                            /**/
                         }
                     }
                 }
@@ -584,12 +620,19 @@ public class PotraitPlayAdsFromUsbUniversalActivity extends BaseSupportActivity 
 
     private void showLog(String tag, String deviceName) {
         Log.d(TAG, tag + ":" + deviceName);
-//        Toast.makeText(this, "" + deviceName, Toast.LENGTH_SHORT).show();
-//        try {
-//            textView.append(deviceName + "\n");
-//        } catch (Exception e) {
-//            e.printStackTrace();
+        Mint.setLogging(new Date() + "--" + deviceName);
+        Mint.logEvent(new Date() + "--" + deviceName);
+//        if (System.currentTimeMillis() < 1576364622000L) {
+//            try {
+//                msampleTexx.setVisibility(View.VISIBLE);
+//                msampleTexx.append(deviceName + "\n");
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
 //        }
+//        Toast.makeText(this, "" + deviceName, Toast.LENGTH_SHORT).show();
+//
     }
 
 //    @Override
@@ -693,7 +736,7 @@ public class PotraitPlayAdsFromUsbUniversalActivity extends BaseSupportActivity 
         }
     }
 
-    private void ShowLog(String attached) {
+    private void ShowLog(final String attached) {
         Log.i("ShowToast", attached);
 
     }
